@@ -1,0 +1,35 @@
+<div class="page-header">
+    <h1 ng-if="job.type=='create'">Create Job</h1>
+    <h1 ng-if="job.type=='edit'">Edit Job</h1>
+</div>
+<form id="jobform" class="form-horizontal" ng-submit="job.saveJob()">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">title</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="job.jobData.title">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">company</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="job.jobData.company">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="col-sm-2 control-label">description</label>
+        <div class="col-sm-6">
+          <textarea class="form-control" form="jobform" ng-model="job.jobData.description" rows="10"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-6">
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="job.type=='create'">Create Job</button>
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="job.type=='edit'">Update Job</button>
+        </div>
+    </div>
+</form>
+<div class="row show-hide-message" ng-show="job.message">
+  <div class="col-sm-6 col-sm-offset-2">
+    <div class="alert alert-info">{{job.message}}</div>
+  </div>
+</div>
