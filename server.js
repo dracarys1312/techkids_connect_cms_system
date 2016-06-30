@@ -11,7 +11,7 @@ var User       = require('./app/models/user');
 var jwt = require('jsonwebtoken');
 var config =require('./config');
 var path = require('path');
-var Question = require('./app/models/question');
+var Job = require('./app/models/job');
 // APP CONFIGURATION ---------------------
 // use body parser so we can grab information from POST requests
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,8 +37,8 @@ app.use(express.static(__dirname + '/public'));
 // API ROUTES ------------------------
 var apiRouter = require('./app/routes/api')(app,express);
 app.use('/api',apiRouter);
-var question_api_Router = require('./app/routes/question-api')(app,express);
-app.use('/api',question_api_Router);
+var job_api_Router = require('./app/routes/job-api')(app,express);
+app.use('/api',job_api_Router);
 // MAIN CATCHALL ROUTE ---------------
 // SEND USERS TO FRONTEND ------------
 // has to be registered after API ROUTES

@@ -1,31 +1,31 @@
-angular.module('jobService', []) // ten duoc dat trong app.routes.js
-.factory('Job', function($http){
-    var jobFactory = {};
-    //get all question packs:
-    jobFactory.all = function(){
-        return $http.get('http://125.212.233.51:2407/api/connect/company');
+angular.module('companyService', []) // ten duoc dat trong app.routes.js
+.factory('Company', function($http){
+    var companyFactory = {};
+    //get all jobs
+    companyFactory.all = function() {
+      return $http.get('http://125.212.233.51:2407/api/connect/company/');
     };
 
-    // create a question pack
-    jobFactory.create = function(jobData) {
-      return $http.post('/api/jobs/', jobData);
+    // create a job
+    companyFactory.create = function(companyData) {
+      return $http.post('http://125.212.233.51:2407/api/connect/post-company/',companyData);
     } ;
 
-    // get single question pack
-    jobFactory.get = function(id) {
-      return $http.get('/api/jobs/' + id );
+    // get single job
+    companyFactory.get = function(id) {
+      return $http.get('http://125.212.233.51:2407/api/connect/companyById/' + id );
     };
 
-    // update a question pack
-    jobFactory.update = function(id,jobData) {
-      return $http.put('/api/jobs/' + id,jobData);
+    // update a job
+    companyFactory.update = function(id,companyData) {
+      return $http.post('http://125.212.233.51:2407/api/connect/edit-company/' + id,companyData);
     };
 
-    // delete a question pack
-    jobFactory.delete = function(id) {
-      return $http.delete('/api/jobs/' + id);
+    // delete a job
+    companyFactory.delete = function(id) {
+      return $http.post('http://125.212.233.51:2407/api/connect/delete-company/' + id);
     };
 
-     //return our entire jobFactory object
-    return jobFactory;
-})
+     //return our entire companyFactory object
+    return companyFactory;
+});

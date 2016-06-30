@@ -1,206 +1,166 @@
-angular.module('jobCtrl', ['jobService'])
-    .controller('jobController', function(Job) {
+angular.module('companyCtrl', ['companyService'])
+    .controller('companyController', function(Company) {
         var vm = this;
         vm.processing = true;
-        // see more ======================
-        vm.numLimit = 80;
-        vm.readMore = function() {
-            vm.numLimit = 3000;
-        };
-        // //========== testing ===============
-        // vm.totalItems = 50;
-        // vm.currentPage = 1;
-        // vm.alerts = [{
-        //     type: 'danger',
-        //     msg: 'Oh snap! Change a few things up and try submitting again.'
-        // }, {
-        //     type: 'success',
-        //     msg: 'Well done! You successfully read this important alert message.'
-        // }];
-        //
-        // vm.addAlert = function() {
-        //     vm.alerts.push({
-        //         msg: 'Another alert!'
-        //     });
-        // };
-        //
-        // vm.closeAlert = function(index) {
-        //     vm.alerts.splice(index, 1);
-        // };
-
-        Job.all()
+        Company.all()
             .success(function(data) {
                 vm.processing = false;
-                vm.jobs = data.company;
-            });
-        vm.deleteJob = function(id) {
-            vm.processing = true;
-            Job.delete(id)
-                .success(function(data) {
-                    Job.all()
-                        .success(function(data) {
-                            vm.processing = false;
-                            vm.jobs = data.company;
-                        });
+                vm.companies = data.company;
+                vm.viewby = 10;
+                vm.totalItems = vm.companies.length;
+                vm.currentPage = 1;
+                vm.itemsPerPage = vm.viewby;
+                vm.maxSize = 5; //Number of pager buttons to show
 
-                });
-        };
-    })
-    .controller('jobCreateController', function(Job) {
-        var vm = this;
-        vm.type = 'create';
-        vm.selectedField = {};
-        vm.jobData = {
-            answer_fields: []
-        };
+                vm.setPage = function(pageNo) {
+                    vm.currentPage = pageNo;
+                };
 
-        vm.getTemplate = function(field) {
-            if (field.id === vm.selectedField.id) return 'edit';
-            else return 'display';
-        };
-
-        vm.addField = function() {
-            var newField = {
-                id: (vm.jobData.answer_fields.length + 1),
-                field: ''
-            };
-            vm.jobData.answer_fields.push(newField);
-            vm.selectedField = angular.copy(newField);
-        };
-
-        vm.editField = function(field) {
-            vm.selectedField = angular.copy(field);
-        };
-
-        vm.deleteField = function(field) {
-            if (confirm("Delete this Field?")) {
-                for (var i = 0; i < vm.jobData.answer_fields.length; i++) {
-                    if (vm.jobData.answer_fields[i].id === field.id) {
-                        vm.jobData.answer_fields.splice(i, 1);
-                    }
-                }
-            }
-        };
-
-        vm.saveColor = function(idx) {
-            vm.jobData.answer_fields[idx] = angular.copy(vm.selectedField);
-            vm.reset();
-        };
-
-        vm.reset = function() {
-            vm.selectedField = {};
-        };
-
-        vm.saveJob = function() {
-            vm.processing = true;
-            vm.message = '';
-            Job.create(vm.jobData)
-                .success(function(data) {
-                    vm.processing = false;
-                    vm.jobData = {};
-                    vm.message = data.message;
-                });
-        };
-    })
-    .controller('jobEditController', function($routeParams, Job) {
-        var vm = this;
-        vm.type = 'edit';
-        vm.jobData = {
-            answer_fields: []
-        };
-        vm.selectedField = {};
-        Job.get($routeParams.job_id)
-            .success(function(data) {
-                vm.jobData = data;
-            });
-        vm.getTemplate = function(field) {
-            if (field.id === vm.selectedField.id) return 'edit';
-            else return 'display';
-        };
-
-        vm.addField = function() {
-            var newField = {
-                id: (vm.jobData.answer_fields.length + 1),
-                field: ''
-            };
-            vm.jobData.answer_fields.push(newField);
-            vm.selectedField = angular.copy(newField);
-        };
-
-        vm.editField = function(field) {
-            vm.selectedField = angular.copy(field);
-        };
-
-        vm.deleteField = function(field) {
-            if (confirm("Delete this Field?")) {
-                for (var i = 0; i < vm.jobData.answer_fields.length; i++) {
-                    if (vm.jobData.answer_fields[i].id === field.id) {
-                        vm.jobData.answer_fields.splice(i, 1);
-                    }
-                }
-            }
-        };
-
-        vm.saveColor = function(idx) {
-            vm.jobData.answer_fields[idx] = angular.copy(vm.selectedField);
-            vm.reset();
-        };
-
-        vm.reset = function() {
-            vm.selectedField = {};
-        };
-        vm.saveJob = function() {
-            vm.processing = true;
-            vm.message = '';
-            Job.update($routeParams.job_id, vm.jobData)
-                .success(function(data) {
-                    vm.processing = false;
-                    vm.jobData = {};
-                    vm.message = data.message;
-                });
-        };
-    })
-    // .controller('shitController', function(Job) {
-    //     var vm = this;
-    //     vm.linhtinh = "dkm";
-    //     vm.numLimit = 20;
-    //     vm.myString = "sdsadsdsdsaldkjslkdsaklds dsalkdjsakdsaj djasldj dsakljd dasjlkds jdasldjsl ";
-    //     vm.readMore = function() {
-    //         vm.numLimit = 300;
-    //     };
-    // })
-    .controller('paginationController', function(Job) {
-        var vm = this;
-        Job.all()
-            .success(function(data) {
-                vm.processing = false;
-                vm.jobs = data.company;
-                // pagination
-                vm.totalItems = vm.company.length;
-                console.log(vm.totalItems);
-                vm.currentPage = 2;
                 vm.pageChanged = function() {
-                    $log.log('Page changed to: ' + $scope.currentPage);
+                    console.log('Page changed to: ' + vm.currentPage);
+                };
+
+                vm.setItemsPerPage = function(num) {
+                    vm.itemsPerPage = num;
+                    vm.currentPage = 1; //reset to first paghe
                 };
             });
 
-    }).controller('TodoController', function($scope) {
-        $scope.filteredTodos = [], $scope.currentPage = 1, $scope.numPerPage = 10, $scope.maxSize = 5;
-        $scope.makeTodos = function() {
-            $scope.todos = [];
-            for (i = 1; i <= 1000; i++) {
-                $scope.todos.push({
-                    text: 'todo ' + i,
-                    done: false
-                });
-            }
+        vm.deleteCompany = function(id) {
+           if (confirm("Delete this job?")){
+               vm.processing = true;
+               Company.delete(id)
+                   .success(function(data) {
+                       Company.all()
+                           .success(function(data) {
+                               vm.processing = false;
+                               vm.companies = data.company;
+                           });
+
+                   });
+           }
+
+       };
+    })
+    .controller('companyCreateController', function(Company) {
+        var vm = this;
+        vm.type = 'create';
+        vm.selectedField = {};
+        vm.companyData = {
+            fields: []
         };
-        $scope.makeTodos();
 
-        $scope.$watch('currentPage + numPerPage', function() {
-            var begin = (($scope.currentPage - 1) * $scope.numPerPage),
-                end = begin + $scope.numPerPage;
+        // vm.getTemplate = function(field) {
+        //     if (field.id === vm.selectedField.id) return 'edit';
+        //     else return 'display';
+        // };
 
-            $scope.filteredTodos = $scope.todos.slice(begin, end);
-        });
+        vm.saveCompany = function() {
+            vm.processing = true;
+            vm.message = '';
+            Company.create(vm.companyData)
+                .success(function(data) {
+                    vm.processing = false;
+                    vm.companyData = {};
+                    vm.message = data.message;
+                });
+        };
+    })
+    .controller('companyEditController', function($routeParams, Company,$location) {
+        var vm = this;
+        vm.type = 'edit';
+        vm.companyData = {
+            fields: []
+        };
+        Company.get($routeParams.company_id)
+            .success(function(res) {
+              console.log("done");
+                vm.companyData = res.data;
+            });
+        // vm.getTemplate = function(field) {
+        //     if (field.id === vm.selectedField.id) return 'edit';
+        //     else return 'display';
+        // };
+        vm.saveCompany = function() {
+            vm.processing = true;
+            vm.message = '';
+            Company.update($routeParams.company_id, vm.companyData)
+                .success(function(data) {
+                    vm.processing = false;
+                    vm.companyData = {};
+                    // vm.message = data.message;
+                    $location.path("/jobs");
+                });
+        };
+    })
+
+    .controller('PaginationCompanyCtrl', function(Company) {
+        var vm = this;
+        Company.all()
+            .success(function(data) {
+                vm.processing = false;
+                vm.companies = data.companies;
+                vm.viewby = 10;
+                // vm.totalItems = vm.companies.length;
+                vm.currentPage = 4;
+                vm.itemsPerPage = vm.viewby;
+                vm.maxSize = 5; //Number of pager buttons to show
+
+                vm.setPage = function(pageNo) {
+                    vm.currentPage = pageNo;
+                };
+
+                vm.pageChanged = function() {
+                    console.log('Page changed to: ' + vm.currentPage);
+                };
+
+                vm.setItemsPerPage = function(num) {
+                    vm.itemsPerPage = num;
+                    vm.currentPage = 1; //reset to first paghe
+                };
+                for (var i = 1; i < vm.companies.length; i++) {
+                    vm.companies[i].index = i;
+                    console.log(vm.companies[i].index);
+                }
+            });
+    })
+    .controller('PaginationDemoCtrl', function() {
+        var vm = this;
+        vm.data = [{
+            "name": "Abraham",
+            "id": "S7V 0W9"
+        }, {
+            "name": "Eleanor",
+            "id": "K7K 9P4"
+        }, {
+            "name": "Martina",
+            "id": "V0Z 5Q7"
+        }, {
+            "name": "Kelsie",
+            "id": "R7N 7P2"
+        }, {
+            "name": "Hedy",
+            "id": "B7E 7F2"
+        }, {
+            "name": "Hakeem",
+            "id": "S5P 3P6"
+        }];
+        vm.viewby = 10;
+        // vm.totalItems = vm.data.length;
+        vm.currentPage = 4;
+        vm.itemsPerPage = vm.viewby;
+        vm.maxSize = 5; //Number of pager buttons to show
+
+        vm.setPage = function(pageNo) {
+            vm.currentPage = pageNo;
+        };
+
+        vm.pageChanged = function() {
+            console.log('Page changed to: ' + vm.currentPage);
+        };
+
+        vm.setItemsPerPage = function(num) {
+            vm.itemsPerPage = num;
+            vm.currentPage = 1; //reset to first paghe
+        };
     });

@@ -31,7 +31,6 @@ angular.module('app.routes', ['ngRoute'])
         controllerAs: 'user'
     })
 
-    // page to edit a user
     .when('/users/:user_id', {
             templateUrl: 'app/views/pages/users/single.html',
             controller: 'userEditController',
@@ -39,18 +38,18 @@ angular.module('app.routes', ['ngRoute'])
         })
         .when('/jobs', {
             templateUrl: 'app/components/views/all.html',
-            controller: 'jobController',
-            controllerAs: 'job'
+            controller: 'companyController',
+            controllerAs: 'company'
         })
         .when('/jobs/create', {
             templateUrl: 'app/components/views/single.html',
-            controller: 'jobCreateController',
-            controllerAs: 'job'
+            controller: 'companyCreateController',
+            controllerAs: 'company'
         })
-        .when('/jobs/:job_id', {
+        .when('/jobs/:company_id', {
             templateUrl: 'app/components/views/single.html',
-            controller: 'jobEditController',
-            controllerAs: 'job'
+            controller: 'companyEditController',
+            controllerAs: 'company'
         })
         ;
     $locationProvider.html5Mode(true);

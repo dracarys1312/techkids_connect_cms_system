@@ -104,7 +104,7 @@ angular.module('authService', [])
 	// };
 
 	interceptorFactory.request = function(config) {
-        var isWeatherAPI = config.url.indexOf('125.212.233.51:9000') > -1;
+        var isWeatherAPI = config.url.indexOf('125.212.233.51:2407') > -1;
     // don't modify weather api headers
     if (!isWeatherAPI) {
         //grab the token

@@ -1,76 +1,76 @@
 <div class="page-header">
-    <h1>jobs</h1>
-    <a href="/jobs/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New Job</a>
-
-  <div ng-controller="shitController as shit">
-    <!-- <p >{{shit.linhtinh}} </p> -->
-  <!-- <p> {{shit.myString | limitTo:shit.numLimit}} </p> -->
-  <!-- <button type='button' ng-click="shit.readMore()">read more</button></div> -->
-
+    <h1>Company</h1>
+    <a href="/jobs/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New Company</a>
 </div>
 <!-- LOADING MESSAGE -->
-<div class="jumbotron text-center" ng-show="job.processing">
+<div class="jumbotron text-center" ng-show="question.processing">
     <span class="glyphicon glyphicon-repeat spinner"></span>
-    <p>Loading Jobs...</p>
+    <p>Loading companies...</p>
 </div>
 <div class="jumbotron text-center">
     <h2>Summary</h2>
 
-    <p>There are: {{job.company.length}} job in this list</p>
+    <p>There are: {{company.companies.length}} companies in this list</p>
     <span class="glyphicon glyphicon-search"></span>
     <input type="search" ng-model="x" placeholder="filter jobs...">
 </div>
-<table class="table table-bordered table-striped" ng-show="job.company">
+<table class="table table-bordered table-striped" ng-show="company.companies">
     <thead>
         <tr>
-            <th>N.o</th>
             <th>job_title</th>
             <th>company_name</th>
             <th>job_description</th>
-            <!-- <th>answer_choices</th>
-            <th>right_answer</th> -->
             <th class="col-sm-2"></th>
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="item in job.company | filter:x as results">
-            <td>{{$index + 1}}</td>
-            <td>{{item.job_title}}</td>
-            <td>{{item.company_name}}</td>
-            <td>{{item.company_name | limitTo:job.numLimit}} <button type='button' ng-click="job.readMore()">read more</button></td>
+        <tr ng-repeat="job in company.companies.slice(((company.currentPage-1)*company.itemsPerPage), ((company.currentPage)*company.itemsPerPage)) | filter:x as results" ng-init="numLimit=16000">
+            <td>{{job.job_title}}</td>
+            <td>{{job.company_name}}</td>
+            <td>{{job.job_description | limitTo:numLimit}}
+            </td>
             <td class="col-sm-2">
-                <a ng-href="/jobs/{{item._id}}" class="btn btn-danger">Edit</a>
-                <a href="#" ng-click="job.deleteJob(item._id)" class="btn btn-primary">Delete</a>
+                <a ng-href="/jobs/{{job._id}}" class="btn btn-danger">Edit</a>
+                <a href="#" ng-click="company.deleteCompany(job._id)" class="btn btn-primary">Delete</a>
 
             </td>
         </tr>
     </tbody>
 </table>
+View
+<select ng-model="company.viewby" ng-change="company.setItemsPerPage(company.viewby)">
+    <option>3</option>
+    <option>5</option>
+    <option>10</option>
+    <option>20</option>
+    <option>30</option>
+    <option>40</option>
+    <option>50</option>
+</select> records at a time.
+
+<uib-pagination total-items="company.totalItems" ng-model="company.currentPage" ng-change="company.pageChanged()" class="pagination-sm" items-per-page="company.itemsPerPage"></uib-pagination>
 
 
-<div ng-controller="TodoController">
-    <!-- <h1>Todos</h1> -->
-    <!-- <h4>{{todos.length}} total</h4> -->
-    <!-- <ul>
-      <li ng-repeat="todo in filteredTodos">{{todo.text}}</li>
-    </ul>
-    <uib-pagination
-      ng-model="currentPage"
-      total-items="todos.length"
-      max-size="maxSize"
-      boundary-links="true">
-    </uib-pagination> -->
-  </div>
 
-<uib-alert ng-repeat="alert in job.alerts" type="{{alert.type}}" close="job.closeAlert($index)">{{alert.msg}}</uib-alert>
-<button type="button" class='btn btn-default' ng-click="job.addAlert()">Add Alert</button>
-    <h4>Pager</h4>
-    <pre>You are currently on page {{job.currentPage}} </pre>
-    <uib-pager total-items="job.totalItems" ng-model="job.currentPage"></uib-pager>
+<!-- <uib-accordion close-others="question.oneAtATime">
+<uib-accordion-group heading="Static Header, initially expanded" is-open="false" is-disabled="question.status.isFirstDisabled">
+  This content is straight in the template.
+</uib-accordion-group>
+<uib-accordion-group heading="Static Header, initially expanded" is-open="false" is-disabled="question.status.isFirstDisabled">
+  This content is straight in the template.
+</uib-accordion-group>
+<uib-accordion-group heading="Static Header, initially expanded" is-open="false" is-disabled="question.status.isFirstDisabled">
+  This content is straight in the template.
+</uib-accordion-group>
+<uib-accordion-group heading="Static Header, initially expanded" is-open="question.status.isFirstOpen" is-disabled="question.status.isFirstDisabled">
+  This content is straight in the template.
+</uib-accordion-group>
+</uib-accordion> -->
 
 
-<pagination
-     max-size="5"
-     items-per-page="7"
-     total-items="job.company"
-     ng-change="pageChanged()"></pagination>
+<!-- <uib-tabset active="active">
+   <uib-tab index="0" heading="Static title">Static content</uib-tab>
+   <uib-tab index="$index + 1" ng-repeat="tab in question.tabs" heading="{{tab.title}}" disable="tab.disabled">
+     {{tab.content}}
+   </uib-tab>
+  </uib-tabset> -->
