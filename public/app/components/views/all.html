@@ -1,19 +1,22 @@
 <div class="page-header">
-    <h1>Company</h1>
-    <a href="/jobs/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New Company</a>
+    <h1>Job</h1>
+    <a href="/jobs/create" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>New Job</a>
 </div>
 <!-- LOADING MESSAGE -->
 <div class="jumbotron text-center" ng-show="question.processing">
     <span class="glyphicon glyphicon-repeat spinner"></span>
-    <p>Loading companies...</p>
+    <p>Loading job...</p>
 </div>
+<!--SUMMARY-->
 <div class="jumbotron text-center">
     <h2>Summary</h2>
 
-    <p>There are: {{company.companies.length}} companies in this list</p>
+    <p>There are: {{company.companies.length}} jobs in this list</p>
     <span class="glyphicon glyphicon-search"></span>
     <input type="search" ng-model="x" placeholder="filter jobs...">
 </div>
+<!--END SUMMARY-->
+<!--CONTENT TABLE-->
 <table class="table table-bordered table-striped" ng-show="company.companies">
     <thead>
         <tr>
@@ -24,19 +27,22 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="job in company.companies.slice(((company.currentPage-1)*company.itemsPerPage), ((company.currentPage)*company.itemsPerPage)) | filter:x as results" ng-init="numLimit=16000">
+        <tr ng-repeat="job in company.companies.slice(((company.currentPage-1)*company.itemsPerPage), ((company.currentPage)*company.itemsPerPage)) | filter:x as results" ng-init="numLimit=150">
             <td>{{job.job_title}}</td>
             <td>{{job.company_name}}</td>
             <td>{{job.job_description | limitTo:numLimit}}
             </td>
             <td class="col-sm-2">
-                <a ng-href="/jobs/{{job._id}}" class="btn btn-danger">Edit</a>
-                <a href="#" ng-click="company.deleteCompany(job._id)" class="btn btn-primary">Delete</a>
+                <a ng-href="/jobs/{{job._id}}" class="btn btn-primary">Edit</a>
+                <a href="#" ng-click="company.deleteCompany(job._id)" class="btn btn-danger">Delete</a>
 
             </td>
         </tr>
     </tbody>
 </table>
+<!--END CONTENT TABLE-->
+
+<!--SET ITEMS PER PAGE-->
 View
 <select ng-model="company.viewby" ng-change="company.setItemsPerPage(company.viewby)">
     <option>3</option>
@@ -47,30 +53,5 @@ View
     <option>40</option>
     <option>50</option>
 </select> records at a time.
-
+<!--END ITEMS PER PAGE-->
 <uib-pagination total-items="company.totalItems" ng-model="company.currentPage" ng-change="company.pageChanged()" class="pagination-sm" items-per-page="company.itemsPerPage"></uib-pagination>
-
-
-
-<!-- <uib-accordion close-others="question.oneAtATime">
-<uib-accordion-group heading="Static Header, initially expanded" is-open="false" is-disabled="question.status.isFirstDisabled">
-  This content is straight in the template.
-</uib-accordion-group>
-<uib-accordion-group heading="Static Header, initially expanded" is-open="false" is-disabled="question.status.isFirstDisabled">
-  This content is straight in the template.
-</uib-accordion-group>
-<uib-accordion-group heading="Static Header, initially expanded" is-open="false" is-disabled="question.status.isFirstDisabled">
-  This content is straight in the template.
-</uib-accordion-group>
-<uib-accordion-group heading="Static Header, initially expanded" is-open="question.status.isFirstOpen" is-disabled="question.status.isFirstDisabled">
-  This content is straight in the template.
-</uib-accordion-group>
-</uib-accordion> -->
-
-
-<!-- <uib-tabset active="active">
-   <uib-tab index="0" heading="Static title">Static content</uib-tab>
-   <uib-tab index="$index + 1" ng-repeat="tab in question.tabs" heading="{{tab.title}}" disable="tab.disabled">
-     {{tab.content}}
-   </uib-tab>
-  </uib-tabset> -->

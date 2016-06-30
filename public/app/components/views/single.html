@@ -1,5 +1,8 @@
+<!--HTML FOR A SINGLE JOB-->
 <div class="page-header">
+    <!--IF USERS CLICK CREATE JOB THIS WILL TURN TO BE A CREATE (JOB) PAGE-->
     <h1 ng-if="company.type=='create'">Create Job</h1>
+    <!--IF USERS CLICK EDIT JOB THIS WILL TURN TO BE A EDIT (JOB) PAGE-->
     <h1 ng-if="company.type=='edit'">Edit Job</h1>
 </div>
 <form id="companyform" class="form-horizontal" ng-submit="company.saveCompany()">
@@ -18,18 +21,15 @@
     <div class="form-group">
         <label for="" class="col-sm-2 control-label">description</label>
         <div class="col-sm-6">
-          <textarea class="form-control" form="jobform" ng-model="company.companyData.job_description" rows="10"></textarea>
+            <textarea class="form-control" form="jobform" ng-model="company.companyData.job_description"></textarea>
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-6">
-            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="company.type=='create'">Create Company</button>
-            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="company.type=='edit'">Update Company</button>
+            <!-- SUBMIT TO API AS A NEW JOB -->
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="company.type=='create'">Create Job</button>
+            <!-- SUBMIT TO API AS AN UPDATED JOB -->
+            <button class="btn btn-success btn-lg btn-block" type="submit" ng-if="company.type=='edit'">Update Job</button>
         </div>
     </div>
 </form>
-<div class="row show-hide-message" ng-show="company.message">
-  <div class="col-sm-6 col-sm-offset-2">
-    <div class="alert alert-info">{{company.message}}</div>
-  </div>
-</div>

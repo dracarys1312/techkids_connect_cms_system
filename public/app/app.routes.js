@@ -1,6 +1,6 @@
 angular.module('app.routes', ['ngRoute'])
 
-.config(function($routeProvider, $locationProvider) {
+.config(function ($routeProvider, $locationProvider) {
 
     $routeProvider
 
@@ -36,22 +36,24 @@ angular.module('app.routes', ['ngRoute'])
             controller: 'userEditController',
             controllerAs: 'user'
         })
+        //view all the jobs
         .when('/jobs', {
             templateUrl: 'app/components/views/all.html',
             controller: 'companyController',
             controllerAs: 'company'
         })
+        //create a job
         .when('/jobs/create', {
             templateUrl: 'app/components/views/single.html',
             controller: 'companyCreateController',
             controllerAs: 'company'
         })
+        //view a single job
         .when('/jobs/:company_id', {
             templateUrl: 'app/components/views/single.html',
             controller: 'companyEditController',
             controllerAs: 'company'
-        })
-        ;
+        });
     $locationProvider.html5Mode(true);
 
 });

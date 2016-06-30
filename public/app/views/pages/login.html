@@ -14,14 +14,14 @@
             </div>
             <!-- LOGIN ERROR -->
             <div class="alert alert-danger" ng-if="login.error">
-              {{login.error}}
+                {{login.error}}
             </div>
             <!-- LOGIN BUTTON -->
             <button class="btn btn-block btn-primary" type="submit">
-              <span ng-if="!login.processing">Login</span>
-              <span ng-if="login.processing" class="spinner">
+                <span ng-if="!login.processing">Login</span>
+                <span ng-if="login.processing" class="spinner">
                 <span class="glyphicon glyphicon-repeat"></span>
-              </span>
+                </span>
             </button>
 
         </form>
